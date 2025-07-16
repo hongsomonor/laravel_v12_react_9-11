@@ -1,119 +1,132 @@
-import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler } from 'react';
+import { useState } from 'react';
+import bot_icon from '/public/build/images/recaptcha-icon.png';
 
-import InputError from '@/components/input-error';
-import TextLink from '@/components/text-link';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import AuthLayout from '@/layouts/auth-layout';
-
-type RegisterForm = {
-    name: string;
-    email: string;
-    password: string;
-    password_confirmation: string;
-};
-
-export default function Register() {
-    const { data, setData, post, processing, errors, reset } = useForm<Required<RegisterForm>>({
-        name: '',
+const register = () => {
+    const [formData, setFormData] = useState({
+        fullName: '',
         email: '',
+        phoneNumber: '',
+        address: '',
         password: '',
-        password_confirmation: '',
+        confirmPassword: '',
     });
-
-    const submit: FormEventHandler = (e) => {
-        e.preventDefault();
-        post(route('register'), {
-            onFinish: () => reset('password', 'password_confirmation'),
-        });
-    };
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [isRobot, setIsRobot] = useState(false);
 
     return (
-        <AuthLayout title="Create an account" description="Enter your details below to create your account">
-            <Head title="Register" />
-            <form className="flex flex-col gap-6" onSubmit={submit}>
-                <div className="grid gap-6">
-                    <div className="grid gap-2">
-                        <Label htmlFor="name">Name</Label>
-                        <Input
-                            id="name"
-                            type="text"
-                            required
-                            autoFocus
-                            tabIndex={1}
-                            autoComplete="name"
-                            value={data.name}
-                            onChange={(e) => setData('name', e.target.value)}
-                            disabled={processing}
-                            placeholder="Full name"
-                        />
-                        <InputError message={errors.name} className="mt-2" />
-                    </div>
-
-                    <div className="grid gap-2">
-                        <Label htmlFor="email">Email address</Label>
-                        <Input
-                            id="email"
+        <div className="flex h-screen w-full items-center justify-center bg-white">
+            <div className="flex w-[900px] flex-col gap-7 rounded-2xl bg-gray-100 px-2 py-4 shadow-md">
+                <h1 className="mt-10 mb-4 text-center text-3xl font-bold">Create Your New Account</h1>
+                <div className="mx-auto flex w-[90%] gap-4">
+                    <div className="mx-auto flex w-[50%] flex-col gap-4">
+                        <label htmlFor="email" className="font-bold">
+                            Full Name
+                        </label>
+                        <input
+                            className="w-full rounded-md border-1 border-gray-300 bg-white px-3 py-4 outline-0"
                             type="email"
-                            required
-                            tabIndex={2}
-                            autoComplete="email"
-                            value={data.email}
-                            onChange={(e) => setData('email', e.target.value)}
-                            disabled={processing}
-                            placeholder="email@example.com"
-                        />
-                        <InputError message={errors.email} />
-                    </div>
-
-                    <div className="grid gap-2">
-                        <Label htmlFor="password">Password</Label>
-                        <Input
+                            // value={email}
                             id="password"
-                            type="password"
-                            required
-                            tabIndex={3}
-                            autoComplete="new-password"
-                            value={data.password}
-                            onChange={(e) => setData('password', e.target.value)}
-                            disabled={processing}
-                            placeholder="Password"
+                            // onChange={(e) => setEmail(e.target.value)}
+                            name="email"
+                            placeholder="Enter your fulll name"
                         />
-                        <InputError message={errors.password} />
                     </div>
-
-                    <div className="grid gap-2">
-                        <Label htmlFor="password_confirmation">Confirm password</Label>
-                        <Input
-                            id="password_confirmation"
-                            type="password"
-                            required
-                            tabIndex={4}
-                            autoComplete="new-password"
-                            value={data.password_confirmation}
-                            onChange={(e) => setData('password_confirmation', e.target.value)}
-                            disabled={processing}
-                            placeholder="Confirm password"
+                    <div className="mx-auto flex w-[50%] flex-col gap-4">
+                        <label htmlFor="email" className="font-bold">
+                            Email Address
+                        </label>
+                        <input
+                            className="w-full rounded-md border-1 border-gray-300 bg-white px-3 py-4 outline-0"
+                            type="email"
+                            // value={email}
+                            id="password"
+                            // onChange={(e) => setEmail(e.target.value)}
+                            name="email"
+                            placeholder="Enter your email"
                         />
-                        <InputError message={errors.password_confirmation} />
                     </div>
-
-                    <Button type="submit" className="mt-2 w-full" tabIndex={5} disabled={processing}>
-                        {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Create account
-                    </Button>
                 </div>
-
-                <div className="text-center text-sm text-muted-foreground">
-                    Already have an account?{' '}
-                    <TextLink href={route('login')} tabIndex={6}>
-                        Log in
-                    </TextLink>
+                <div className="mx-auto flex w-[90%] gap-4">
+                    <div className="mx-auto flex w-[50%] flex-col gap-4">
+                        <label htmlFor="email" className="font-bold">
+                            Phone Number
+                        </label>
+                        <input
+                            className="w-full rounded-md border-1 border-gray-300 bg-white px-3 py-4 outline-0"
+                            type="email"
+                            // value={email}
+                            id="password"
+                            // onChange={(e) => setEmail(e.target.value)}
+                            name="email"
+                            placeholder="Enter your phone number"
+                        />
+                    </div>
+                    <div className="mx-auto flex w-[50%] flex-col gap-4">
+                        <label htmlFor="email" className="font-bold">
+                            Address
+                        </label>
+                        <input
+                            className="w-full rounded-md border-1 border-gray-300 bg-white px-3 py-4 outline-0"
+                            type="email"
+                            // value={email}
+                            id="password"
+                            // onChange={(e) => setEmail(e.target.value)}
+                            name="email"
+                            placeholder="Enter your address"
+                        />
+                    </div>
                 </div>
-            </form>
-        </AuthLayout>
+                <div className="mx-auto flex w-[90%] flex-col gap-4">
+                    <label htmlFor="email" className="font-bold">
+                        Create Password
+                    </label>
+                    <input
+                        className="w-full rounded-md border-1 border-gray-300 bg-white px-3 py-4 outline-0"
+                        type="email"
+                        // value={email}
+                        id="password"
+                        // onChange={(e) => setEmail(e.target.value)}
+                        name="email"
+                        placeholder="Enter your password"
+                    />
+                </div>
+                <div className="mx-auto flex w-[90%] flex-col gap-4">
+                    <label htmlFor="email" className="font-bold">
+                        Confirm Password
+                    </label>
+                    <input
+                        className="w-full rounded-md border-1 border-gray-300 bg-white px-3 py-4 outline-0"
+                        type="email"
+                        // value={email}
+                        id="password"
+                        // onChange={(e) => setEmail(e.target.value)}
+                        name="email"
+                        placeholder="Enter your password"
+                    />
+                </div>
+                <div className="ml-[46px] flex w-[35%] items-center justify-between border border-gray-300 px-3 py-4">
+                    <div className="flex items-center gap-3">
+                        <input type="checkbox" className="size-[30px]" name="" id="" />
+                        <span>I'm not a robot</span>
+                    </div>
+                    <img src={bot_icon} className="w-[50px]" alt="" />
+                </div>
+                <button
+                    type="button"
+                    className="mx-auto w-[90%] cursor-pointer rounded-lg bg-orange-500 p-4 font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:bg-orange-600"
+                >
+                    Register
+                </button>
+                <div className="mx-auto mb-6 flex w-[90%] items-center justify-center gap-1">
+                    <span>Already have an account?</span>
+                    <a href="#" className="text-[17px] font-bold text-orange-400">
+                        Login
+                    </a>
+                </div>
+            </div>
+        </div>
     );
-}
+};
+
+export default register;
