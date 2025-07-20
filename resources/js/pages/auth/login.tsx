@@ -12,6 +12,11 @@ export default function Login() {
         console.log('Login submitted:', { email, password, rememberMe });
     };
 
+    const handleGoogleLogin = () => {
+        // Redirect to Laravel Google auth endpoint
+        window.location.href = `${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/auth/google`;
+    };
+
     return (
         <div className="flex h-screen w-full items-center justify-center bg-white">
             <div className="flex w-[700px] flex-col gap-8 rounded-2xl bg-gray-100 px-2 py-4 shadow-md">
@@ -52,18 +57,23 @@ export default function Login() {
                         Forgot password?
                     </a>
                 </div>
-                <button type='button' onClick={handleSubmit} className="mx-auto w-[90%] cursor-pointer rounded-lg bg-orange-500 p-4 font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:bg-orange-600">
+                <button
+                    type="button"
+                    onClick={handleSubmit}
+                    className="mx-auto w-[90%] cursor-pointer rounded-lg bg-orange-500 p-4 font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:bg-orange-600"
+                >
                     Login
                 </button>
                 <span className="text-center font-bold">Or</span>
                 <div className="mx-auto flex w-[90%] flex-col gap-2">
-                    <a
-                        href="#"
+                    <button
+                        onClick={handleGoogleLogin}
+                        type="button"
                         className="group mx-auto flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border-1 border-gray-300 bg-white p-4 font-bold text-white transition-all duration-300 hover:border-orange-600"
                     >
                         <img src={google_icon} className="w-[25px]" alt="" />
                         <span className="text-black transition-all duration-300 group-hover:text-orange-500">Login With Google</span>
-                    </a>
+                    </button>
                     <a
                         href="#"
                         className="group mx-auto flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border-1 border-gray-300 bg-white p-4 font-bold text-white transition-all duration-300 hover:border-orange-600"
